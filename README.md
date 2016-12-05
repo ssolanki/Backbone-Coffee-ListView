@@ -12,4 +12,4 @@
 
 3) Open index.html file in browser  
 
-    Happy Coding!
+### Happy Coding!
