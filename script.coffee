@@ -11,11 +11,35 @@ jQuery ->
     tagName: 'li',
 
     initialize: ->
+      console.log("itemview init called");
       _.bindAll @
+      @model.bind 'change', @render
+      @model.bind 'remove', @unrender
 
-    render: ->
-      $(@el).html "<span>#{@model.get 'part1'} #{@model.get 'part2'}!</span>"
+    render: =>
+      console.log("render item view called");
+      console.log("model: ", @model);
+      $(@el).html "<span>#{@model.get 'part1'} #{@model.get 'part2'}!</span>
+        <span class='swap'>swap</span>
+        <span class='delete'>delete</span>
+        "
       @
+
+    unrender: =>
+      $(@el).remove()
+
+    remove: ->
+      @model.destroy()
+
+    swapParts: ->
+      console.log("swap parts called");
+      @model.set
+        part1: @model.get 'part2'
+        part2: @model.get 'part1'
+
+    events:
+      'click .swap': 'swapParts'
+      'click .delete': 'remove'
 
   class ListView extends Backbone.View
     el: $ 'body'
@@ -48,4 +72,6 @@ jQuery ->
 
     events: 'click button': 'addItem'
 
+  Backbone.sync = (method, model, success, error) ->
+    success()
   list_view = new ListView
